@@ -1,0 +1,48 @@
+<form [formGroup]="editUserForm" (ngSubmit)="onSubmit()">
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="role">Role</label>
+        <input formControlName="role" type="text" class="form-control" placeholder="Enter Role" />
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="district">District Name</label>
+        <input formControlName="district" type="text" class="form-control" placeholder="Enter District Name" />
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input formControlName="name" type="text" class="form-control" placeholder="Enter Name" />
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input formControlName="email" type="email" class="form-control" placeholder="Enter Email" />
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input formControlName="password" type="password" class="form-control" placeholder="Choose a Password" />
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input formControlName="confirmPassword" type="password" class="form-control" placeholder="Confirm Your Password" />
+      </div>
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-primary mt-4">Submit</button>
+</form>

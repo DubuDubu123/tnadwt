@@ -1,0 +1,31 @@
+/* Ensure the app-navbar-item centers the content */
+.app-navbar-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%; /* Adjust height as per your header height */
+  position: relative; /* To prevent scrollbar affecting layout */
+}
+
+/* Ensure the symbol div is centered */
+.symbol {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 40px; /* Adjust as needed */
+  max-height: 40px; /* Adjust as needed */
+  overflow: hidden;
+}
+
+/* Make sure the image stays centered and responsive */
+.symbol img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover; /* Ensures the image fits within the bounds */
+}
+
+/* Optional: add some padding around the image if needed */
+.app-navbar-item .symbol {
+  padding: 5px; /* Adjust if needed */
+}
