@@ -1,0 +1,804 @@
+
+
+<div class="card">
+  <div class="card-header text-center py-4">
+    <h2 class="mb-0 fw-bold text-dark" style="font-size: 1.75rem;">Add FIR - {{ tabs[step - 1].label }}</h2>
+  </div>
+  <div class="card-body">
+    <form [formGroup]="firForm" (ngSubmit)="onSubmit()">
+      <!-- Step Navigation -->
+      <ul class="nav nav-pills mb-4">
+        <li class="nav-item" *ngFor="let tab of tabs; let i = index">
+          <a
+            class="nav-link"
+            [class.active]="step === i + 1"
+            (click)="setStep(i + 1)"
+            href="javascript:void(0)"
+          >
+            Step {{ i + 1 }}: {{ tab.label }}
+          </a>
+        </li>
+      </ul>
+
+      <!-- Step 1: Basic Information -->
+    <div *ngIf="step === 1" class="form-step">
+        <h3 class="mb-4">Basic Information</h3>
+
+        <div class="location-details mb-4">
+          <h5>Location Details</h5>
+          <div class="row">
+            <div class="col-md-6 col-lg-3 mb-3">
+              <label for="policeCity" class="form-label">1. Police City / District *</label>
+              <select
+                id="policeCity"
+                class="form-select"
+                formControlName="policeCity"
+                (change)="onCityChange($event)"
+                required
+              >
+                <option value="" disabled>Select one</option>
+                <option *ngFor="let city of policeCities" [value]="city">{{ city }}</option>
+              </select>
+            </div>
+
+            <div class="col-md-6 col-lg-3 mb-3">
+              <label for="policeZone" class="form-label">2. Police Zone *</label>
+              <select
+                id="policeZone"
+                class="form-select"
+                formControlName="policeZone"
+                required
+              >
+                <option value="" disabled>Select one</option>
+                <option *ngFor="let zone of policeZones" [value]="zone">{{ zone }}</option>
+              </select>
+            </div>
+
+            <div class="col-md-6 col-lg-3 mb-3">
+              <label for="policeRange" class="form-label">3. Police Range *</label>
+              <select
+                id="policeRange"
+                class="form-select"
+                formControlName="policeRange"
+                required
+              >
+                <option value="" disabled>Select one</option>
+                <option *ngFor="let range of policeRanges" [value]="range">{{ range }}</option>
+              </select>
+            </div>
+
+            <div class="col-md-6 col-lg-3 mb-3">
+              <label for="revenueDistrict" class="form-label">4. Revenue District *</label>
+              <select
+                id="revenueDistrict"
+                class="form-select"
+                formControlName="revenueDistrict"
+                required
+              >
+                <option value="" disabled>Select one</option>
+                <option *ngFor="let district of revenueDistricts" [value]="district">{{ district }}</option>
+              </select>
+            </div>
+
+            <div class="col-md-12 mb-3">
+              <label for="policeStationDetails" class="form-label small">
+                5. Police Station Details
+
+              </label>
+              <div class="input-group" style="max-width: 500px;">
+                <!-- Dropdown for selecting alphabet A-Z -->
+                <select
+                  id="alphabetSelection"
+                  class="form-select"
+                  formControlName="alphabetSelection"
+                  required
+                  style="width: 40px;"
+                >
+                  <option value="" disabled selected>Select A-Z</option>
+                  <option *ngFor="let char of alphabetList" [value]="char">{{ char }}</option>
+                </select>
+                <!-- Input for the station number -->
+                <select
+                id="stationNumber"
+                class="form-select"
+                formControlName="stationNumber"
+                required
+                style="width: 40px;"
+              >
+                <option value="" disabled selected>Select One</option>
+                <option *ngFor="let number of stationNumbers" [value]="number">{{ number }}</option>
+              </select>
+                <!-- Input for the police station name -->
+                <input
+                  type="text"
+                  id="stationName"
+                  class="form-control"
+                  formControlName="stationName"
+                  placeholder="Station Name"
+                  required
+                  style="width: 150px;"
+                />
+              </div>
+              <!-- Directly show the information below the input -->
+              <small class="text-danger d-block mt-1">
+                Please enter the police station details in the format "A-123-Guindy".
+              </small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Investigation Officer Details Section -->
+        <div class="investigation-officer-details mb-4">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5>Investigation Officer Details</h5>
+            <button type="button" class="btn btn-info btn-sm text-white" (click)="addOfficer()">
+              <i class="bi bi-plus"></i> Add Officer
+            </button>
+          </div>
+
+          <!-- Form Array for Investigating Officers -->
+          <div formArrayName="investigatingOfficers">
+            <div *ngFor="let officer of investigatingOfficers.controls; let i = index" [formGroupName]="i" class="officer-entry mt-3">
+
+              <!-- Card Structure for Each Officer -->
+              <div class="card border-primary">
+                <div class="card-header bg-primary text-white">
+                  <h6 class="mt-4 text-white">Officer #{{ i + 1 }} Details</h6>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-6 col-lg-4 mb-3">
+                      <label [for]="'investigationOfficerName' + i" class="form-label">Officer Name</label>
+                      <input
+                        type="text"
+                        [id]="'investigationOfficerName' + i"
+                        class="form-control"
+                        formControlName="name"
+                        placeholder="Name of the Investigating Officer"
+                        required
+                      />
+                    </div>
+                    <div class="col-md-6 col-lg-4 mb-3">
+                      <label [for]="'investigationOfficerDesignation' + i" class="form-label">Officer Designation</label>
+                      <input
+                        type="text"
+                        [id]="'investigationOfficerDesignation' + i"
+                        class="form-control"
+                        formControlName="designation"
+                        placeholder="Designation of the Investigating Officer"
+                        required
+                      />
+                    </div>
+                    <div class="col-md-6 col-lg-4 mb-3">
+                      <label [for]="'investigationOfficerPhone' + i" class="form-label">Officer Phone</label>
+                      <input
+                        type="text"
+                        [id]="'investigationOfficerPhone' + i"
+                        class="form-control"
+                        formControlName="phone"
+                        placeholder="Phone Number of the Investigating Officer"
+                        maxlength="10"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <!-- Remove Officer Button (Visible if more than 1 officer) -->
+                  <div class="d-flex justify-content-end" *ngIf="investigatingOfficers.length > 1">
+                    <button type="button" class="btn btn-danger btn-sm text-white" (click)="removeOfficer(i)">
+                      <i class="bi bi-dash"></i> Remove Officer
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <button type="button" class="btn btn-warning me-2" (click)="saveAsDraft()">Save as Draft</button>
+        <button type="button" class="btn btn-primary" (click)="onSubmit()">Next</button>
+
+      </div>
+
+      <div *ngIf="step === 2" class="form-step">
+        <h3 class="mb-4">Step 2: Offence Information</h3>
+
+        <div class="row mb-3">
+          <div class="row mb-3">
+            <div class="col-md-5 mb-3">
+              <label for="firNumber" class="form-label">11. FIR Number *</label>
+              <div class="input-group">
+                <!-- FIR Number (Select dropdown from 1 to 99) -->
+                <select id="firNumber" class="form-select" formControlName="firNumber" required>
+                  <option value="" disabled selected>Select FIR Number</option>
+                  <option *ngFor="let num of firNumberOptions" [value]="num">{{ num }}</option>
+                </select>
+
+                <!-- Separator -->
+                <span class="input-group-text">/</span>
+
+
+  <select
+    id="firNumberSuffix"
+    class="form-select"
+    formControlName="firNumberSuffix"
+    required
+  >
+    <option value="" disabled selected>Select Year</option>
+    <option *ngFor="let year of yearOptions" [value]="year">{{ year }}</option>
+  </select>
+
+
+
+              </div>
+              <small class="text-danger d-block mt-1">
+                Please Follow the format "12-2024".
+              </small>
+            </div>
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+          <div class="col-md-4 mb-3">
+            <label for="dateOfOccurrence" class="form-label">12. Date of Occurrence *</label>
+            <input
+              type="date"
+              id="dateOfOccurrence"
+              class="form-control"
+              formControlName="dateOfOccurrence"
+              required
+            />
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="timeOfOccurrence" class="form-label">13. Time of Occurrence *</label>
+            <input
+              type="time"
+              id="timeOfOccurrence"
+              class="form-control"
+              formControlName="timeOfOccurrence"
+              required
+            />
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="placeOfOccurrence" class="form-label">14. Place of Occurrence *</label>
+            <input
+              type="text"
+              id="placeOfOccurrence"
+              class="form-control"
+              formControlName="placeOfOccurrence"
+              placeholder="Place of Occurrence"
+              required
+            />
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="dateOfRegistration" class="form-label">15. Date of Case Registration *</label>
+            <input
+              type="date"
+              id="dateOfRegistration"
+              class="form-control"
+              formControlName="dateOfRegistration"
+              required
+            />
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="timeOfRegistration" class="form-label">16. Time of Case Registration *</label>
+            <input
+              type="time"
+              id="timeOfRegistration"
+              class="form-control"
+              formControlName="timeOfRegistration"
+              required
+            />
+          </div>
+
+          <!-- Nature of Offence (with reduced height and controlled width) -->
+          <div class="col-md-4 mb-3">
+            <label for="natureOfOffence" class="form-label">17. Nature of Offence *</label>
+            <mat-form-field appearance="outline" class="w-100 custom-height" style="height: 20px;">
+              <mat-label>Select options</mat-label>
+              <mat-select formControlName="natureOfOffence" multiple>
+                <mat-option *ngFor="let offence of offenceOptions" [value]="offence">
+                  {{ offence }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+
+
+          <!-- Section Invoked Under IPC/POCSO/etc. -->
+          <div class="col-md-12 mb-3">
+            <label for="sectionsIPC" class="form-label">18. Section Invoked Under IPC/POCSO/etc. *</label>
+            <textarea
+              id="sectionsIPC"
+              class="form-control"
+              formControlName="sectionsIPC"
+              rows="1"
+              required
+              maxlength="500"
+              placeholder="Section Invoked Under IPC/POCSO/etc."
+            ></textarea>
+            <small class="form-text text-muted">Number of Characters: {{ 500 - (firForm.get('sectionsIPC')?.value?.length || 0) }}/500</small>
+          </div>
+
+          <!-- Sections of the SC/ST POA Act Invoked for the Offence -->
+          <div class="col-md-12 mb-3">
+            <label for="scstSections" class="form-label">19. Sections of the SC/ST POA Act Invoked for the Offence *</label>
+            <br>
+            <mat-form-field appearance="outline" class="w-100 h-20">
+              <mat-label>Select options</mat-label>
+              <mat-select formControlName="scstSections" multiple>
+                <mat-option *ngFor="let act of offenceActsOptions" [value]="act">
+                  {{ act }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="mt-4">
+          <button type="button" class="btn btn-warning me-2" (click)="saveAsDraft()">Save as Draft</button>
+          <button type="button" class="btn btn-secondary me-2" (click)="previousStep()">Previous</button>
+          <button type="button" class="btn btn-primary" (click)="nextStep()">Next</button>
+        </div>
+      </div>
+
+
+
+
+
+      <div *ngIf="step === 3" class="form-step">
+        <h3 class="mb-4">Step 3: Victim Information</h3>
+
+        <!-- Complainant Details Section -->
+        <div class="row mb-4" formGroupName="complainantDetails">
+          <div class="col-md-4 mb-3">
+            <label for="nameOfComplainant" class="form-label">19. Name of Complainant *</label>
+            <input
+              type="text"
+              id="nameOfComplainant"
+              class="form-control"
+              formControlName="nameOfComplainant"
+              placeholder="Enter Name of Complainant"
+              required
+            />
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <label for="mobileNumberOfComplainant" class="form-label">20. Mobile Number of Complainant *</label>
+            <input
+              type="text"
+              id="mobileNumberOfComplainant"
+              class="form-control"
+              formControlName="mobileNumberOfComplainant"
+              placeholder="Enter Mobile Number"
+              required
+            />
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <label for="isVictimSameAsComplainant" class="form-label">21. Is the victim same as complainant? *</label>
+            <select
+              id="isVictimSameAsComplainant"
+              class="form-select"
+              formControlName="isVictimSameAsComplainant"
+              required
+            >
+              <option value="" disabled>Select</option>
+              <option [value]="true">Yes</option>
+              <option [value]="false">No</option>
+            </select>
+          </div>
+
+          <div class="col-md-2 mb-3">
+            <label for="numberOfVictims" class="form-label">22. Number of Victims *</label>
+            <select
+              id="numberOfVictims"
+              class="form-select"
+              formControlName="numberOfVictims"
+              (change)="onNumberOfVictimsChange()"
+              required
+            >
+              <option value="" disabled>Select</option>
+              <option *ngFor="let num of [1, 2, 3, 4, 5]" [value]="num">{{ num }}</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Victim Details Section -->
+        <div *ngIf="!loading" formArrayName="victims">
+          <div
+            *ngFor="let victim of victims.controls; let i = index"
+            [formGroupName]="i"
+            class="victim-entry mb-4 card border-primary"
+          >
+            <div class="card-header bg-primary">
+              <h5 class="text-white mt-3">#{{ i + 1 }} Victim Details</h5>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-4 mb-3">
+                  <label for="victimAge{{ i }}" class="form-label">23. Age of the Victim *</label>
+                  <input
+                    type="text"
+                    [id]="'victimAge' + i"
+                    class="form-control"
+                    formControlName="age"
+                    placeholder="Enter Age of the Victim"
+                    required
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="victimName{{ i }}" class="form-label">24. Name of the Victim *</label>
+                  <input
+                    type="text"
+                    [id]="'victimName' + i"
+                    class="form-control"
+                    formControlName="name"
+                    placeholder="Enter Name of the Victim"
+                    required
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="victimGender{{ i }}" class="form-label">25. Gender of the Victim *</label>
+                  <select
+                    [id]="'victimGender' + i"
+                    class="form-select"
+                    formControlName="gender"
+                    required
+                  >
+                    <option value="" disabled>Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label for="victimMobile{{ i }}" class="form-label">26. Mobile Number of the Victim</label>
+                  <input
+                    type="text"
+                    [id]="'victimMobile' + i"
+                    class="form-control"
+                    formControlName="mobileNumber"
+                    placeholder="Enter Mobile Number"
+                  />
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="victimAddress{{ i }}" class="form-label">27. Address of the Victim</label>
+                  <input
+                    type="text"
+                    [id]="'victimAddress' + i"
+                    class="form-control"
+                    formControlName="address"
+                    placeholder="Enter Address"
+                  />
+                </div>
+
+                <div class="col-md-4 mb-3">
+                  <label for="victimCommunity{{ i }}" class="form-label">28. Community of the Victim *</label>
+                  <select
+                    [id]="'victimCommunity' + i"
+                    class="form-select"
+                    formControlName="community"
+                    required
+                  >
+                    <option value="" disabled>Select Community</option>
+                    <option value="SC">SC</option>
+                    <option value="SCA">SCA</option>
+                    <option value="ST">ST</option>
+                  </select>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                  <label for="victimCaste{{ i }}" class="form-label">29. Caste of the Victim *</label>
+                  <select
+                    [id]="'victimCaste' + i"
+                    class="form-select"
+                    formControlName="caste"
+                    required
+                  >
+                    <option value="" disabled>Select Caste</option>
+                    <option *ngFor="let caste of scstSectionsOptions" [value]="caste">{{ caste }}</option>
+                  </select>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                  <label for="victimGuardian{{ i }}" class="form-label">30. Name of the Victim's Guardian *</label>
+                  <input
+                    type="text"
+                    [id]="'victimGuardian' + i"
+                    class="form-control"
+                    formControlName="guardianName"
+                    placeholder="Enter Guardian's Name"
+                    required
+                  />
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label for="isNativeDistrictSame{{ i }}" class="form-label d-block">31. Is the victim’s native district the same as the scene of crime occurrence? *</label>
+                  <select
+                    [id]="'isNativeDistrictSame' + i"
+                    class="form-select"
+                    formControlName="isNativeDistrictSame"
+                    (change)="onNativeDistrictSameChange(i)"
+                    required
+                  >
+                    <option value="" disabled>Select an option</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                  </select>
+                </div>
+
+
+                <div class="col-md-6 mb-3" *ngIf="victims.at(i).get('isNativeDistrictSame')?.value === 'no'">
+                  <label for="victimNativeDistrict{{ i }}" class="form-label">32. Victim's Native District *</label>
+                  <select
+                    [id]="'victimNativeDistrict' + i"
+                    class="form-select"
+                    formControlName="nativeDistrict"
+                    required
+                  >
+                    <option value="" disabled>Select District</option>
+                    <option *ngFor="let district of policeStations" [value]="district">{{ district }}</option>
+                  </select>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">33. Nature of offence committed against the victim *</label>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Select options</mat-label>
+                    <mat-select formControlName="offenceCommitted" multiple>
+                      <mat-option *ngFor="let option of offenceOptions" [value]="option">
+                        {{ option }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="isDeceased{{ i }}" class="form-label d-block">34. Has the victim deceased due to the offence? *</label>
+                  <select
+                    [id]="'isDeceased' + i"
+                    class="form-select"
+                    formControlName="isDeceased"
+                    (change)="onIsDeceasedChange(i)"
+                    required
+                  >
+                    <option value="" disabled>Select an option</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                  </select>
+                </div>
+
+                <!-- Input field for Name of the deceased person -->
+                <div class="col-md-6 mb-3" *ngIf="victims.at(i).get('isDeceased')?.value === 'yes'">
+                  <label for="deceasedPersonName{{ i }}" class="form-label">35. Name of the deceased person *</label>
+                  <input
+                    type="text"
+                    [id]="'deceasedPersonName' + i"
+                    class="form-control"
+                    formControlName="deceasedPersonName"
+                    placeholder="Enter Name of the Deceased"
+                    required
+                  />
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="mt-4">
+          <button type="button" class="btn btn-secondary me-2" (click)="previousStep()">Previous</button>
+          <button type="button" class="btn btn-primary" (click)="nextStep()">Next</button>
+        </div>
+      </div>
+
+
+
+
+
+
+
+      <div *ngIf="step === 4" class="form-step">
+        <h3 class="mb-4">Step 4: Accused Information</h3>
+
+        <!-- Number of Accused Section -->
+        <div class="col-md-6 mb-3">
+          <label for="numberOfAccused" class="form-label">Number of Accused *</label>
+          <select
+            id="numberOfAccused"
+            class="form-select"
+            formControlName="numberOfAccused"
+            (change)="onNumberOfAccusedChange()"
+            required
+          >
+            <option value="" disabled>Select</option>
+            <option *ngFor="let num of [1, 2, 3, 4, 5]" [value]="num">{{ num }}</option>
+          </select>
+        </div>
+
+        <!-- Loading Spinner -->
+        <div *ngIf="loading" class="text-center">
+          <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+
+        <!-- Accused Details Section -->
+        <div *ngIf="!loading" formArrayName="accuseds">
+          <div *ngFor="let accused of accuseds.controls; let i = index" [formGroupName]="i" class="accused-entry mb-4 card border-primary">
+            <div class="card-header bg-primary text-white">
+              <h5>#{{ i + 1 }} Accused Details</h5>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-4 mb-3">
+                  <label for="accusedAge{{ i }}" class="form-label">Age of the Accused *</label>
+                  <input
+                    type="text"
+                    [id]="'accusedAge' + i"
+                    class="form-control"
+                    formControlName="age"
+                    required
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="accusedName{{ i }}" class="form-label">Name of the Accused *</label>
+                  <input
+                    type="text"
+                    [id]="'accusedName' + i"
+                    class="form-control"
+                    formControlName="name"
+                    required
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="accusedGender{{ i }}" class="form-label">Gender of the Accused *</label>
+                  <select
+                    [id]="'accusedGender' + i"
+                    class="form-select"
+                    formControlName="gender"
+                    required
+                  >
+                    <option value="" disabled>Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+
+                <!-- Address -->
+                <div class="col-md-6 mb-3">
+                  <label for="accusedAddress{{ i }}" class="form-label">Address of the Accused</label>
+                  <input
+                    type="text"
+                    [id]="'accusedAddress' + i"
+                    class="form-control"
+                    formControlName="address"
+                  />
+                </div>
+
+                <!-- Community and Caste -->
+                <div class="col-md-4 mb-3">
+                  <label for="accusedCommunity{{ i }}" class="form-label">Community of the Accused *</label>
+                  <select
+                    [id]="'accusedCommunity' + i"
+                    class="form-select"
+                    formControlName="community"
+                    required
+                  >
+                    <option value="OC">OC</option>
+                    <option value="BC">BC</option>
+                    <option value="BCM">BCM</option>
+                    <option value="MBC">MBC</option>
+                  </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="accusedCaste{{ i }}" class="form-label">Caste of the Accused *</label>
+                  <select
+                    [id]="'accusedCaste' + i"
+                    class="form-select"
+                    formControlName="caste"
+                    required
+                  >
+                    <option value="" disabled>Select Caste</option>
+                    <option *ngFor="let caste of scstSectionsOptions" [value]="caste">{{ caste }}</option>
+                  </select>
+                </div>
+
+                <!-- Father/Spouse Name -->
+                <div class="col-md-4 mb-3">
+                  <label for="accusedGuardian{{ i }}" class="form-label">Name of the Accused person's Father/Spouse *</label>
+                  <input
+                    type="text"
+                    [id]="'accusedGuardian' + i"
+                    class="form-control"
+                    formControlName="guardianName"
+                    required
+                  />
+                </div>
+
+                <!-- Arrest Information -->
+                <div class="col-md-6 mb-3 d-flex align-items-center">
+                  <label for="isArrested{{ i }}" class="form-label me-2">Has the accused been arrested? *</label>
+                  <div class="form-check form-switch">
+                    <input
+                      type="checkbox"
+                      class="form-check-input"
+                      [id]="'isArrested' + i"
+                      formControlName="isArrested"
+                      (change)="onIsArrestedChange(i)"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3" *ngIf="accused.get('isArrested')?.value === false">
+                  <label for="reasonForNonArrest{{ i }}" class="form-label">What is the reason for the non-arrest? *</label>
+                  <select
+                    [id]="'reasonForNonArrest' + i"
+                    class="form-select"
+                    formControlName="reasonForNonArrest"
+                    required
+                  >
+                    <option value="" disabled>Select reason for non-arrest</option>
+                    <option value="Reason 1">Case under investigation</option>
+                    <option value="Reason 2">Accused person has absconded</option>
+                    <option value="Reason 3">Accused person is not alive</option>
+                    <option value="Reason 4">Others</option>
+                  </select>
+                </div>
+
+                <!-- File Uploads -->
+                <div class="col-md-6 mb-3">
+                  <label for="uploadFIRCopy{{ i }}" class="form-label">Upload FIR Copy *</label>
+                  <input
+                    type="file"
+                    [id]="'uploadFIRCopy' + i"
+                    class="form-control"
+                    formControlName="uploadFIRCopy"
+                    required
+                  />
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="uploadAlterationCopy{{ i }}" class="form-label">Upload Alteration Copy *</label>
+                  <input
+                    type="file"
+                    [id]="'uploadAlterationCopy' + i"
+                    class="form-control"
+                    formControlName="uploadAlterationCopy"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="mt-4">
+          <button type="button" class="btn btn-secondary" (click)="previousStep()">Previous</button>
+          <button type="button" class="btn btn-primary" (click)="nextStep()">Next</button>
+        </div>
+      </div>
+
+
+    </form>
+  </div>
+</div>
