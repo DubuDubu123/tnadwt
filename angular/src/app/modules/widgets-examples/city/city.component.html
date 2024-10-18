@@ -1,0 +1,103 @@
+<div class="card">
+  <div class="card-header border-0 pt-6">
+    <div class="card-title">
+      <div class="d-flex align-items-center position-relative my-1">
+        <i class="fas fa-search fs-3 position-absolute ms-5"></i>
+        <input
+          type="text"
+          [(ngModel)]="searchText"
+          class="form-control form-control-solid w-250px ps-12"
+          placeholder="Search"
+        />
+      </div>
+    </div>
+    <div class="card-toolbar">
+      <div class="d-flex justify-content-end">
+        <button type="button" class="btn btn-primary" (click)="openModal()">
+          <i class="fas fa-plus-circle"></i> Add City
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-body pt-0">
+    <table class="table table-striped table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>Sl.No</th>
+          <th>City Name</th>
+          <th>District Name</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let city of filteredCities() | paginate: { itemsPerPage: 10, currentPage: page }; let i = index">
+          <td>{{ (page - 1) * 10 + i + 1 }}</td>
+          <td>{{ city.city_name }}</td>
+          <td>{{ city.district_name }}</td>
+          <td>
+            <span class="badge" [ngClass]="{
+              'badge-success': city.status === 1,
+              'badge-danger': city.status === 0
+            }">
+              {{ city.status === 1 ? 'Active' : 'Inactive' }}
+            </span>
+          </td>
+          <td>
+            <div ngbDropdown class="d-inline-block">
+              <button ngbDropdownToggle class="btn btn-circle btn-icon btn-bg-light btn-active-color-primary">
+                <i class="fas fa-ellipsis-h fs-3"></i>
+              </button>
+              <div ngbDropdownMenu>
+                <button ngbDropdownItem (click)="editCity(city, i)">Edit</button>
+                <button ngbDropdownItem (click)="confirmDelete(i)">Remove</button>
+                <button ngbDropdownItem (click)="confirmToggleStatus(city)">
+                  {{ city.status === 1 ? 'Set Inactive' : 'Set Active' }}
+                </button>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="d-flex justify-content-end align-items-center">
+      <pagination-controls (pageChange)="page = $event"></pagination-controls>
+    </div>
+  </div>
+</div>
+
+<!-- Modal for adding/editing City -->
+<ng-template #formModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">{{ cityModel.city_name ? 'Edit' : 'Add' }} City</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
+  </div>
+  <div class="modal-body">
+    <form #myForm="ngForm">
+      <div class="mb-3">
+        <label for="districtName" class="form-label">District Name</label>
+        <select class="form-control" id="districtName" [(ngModel)]="cityModel.district_name" name="districtName" required>
+          <option value="" disabled selected>Select District</option>
+          <option *ngFor="let district of districts" [value]="district.district_name">{{ district.district_name }}</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="cityName" class="form-label">City Name</label>
+        <input
+          type="text"
+          class="form-control"
+          id="cityName"
+          [(ngModel)]="cityModel.city_name"
+          name="cityName"
+          required
+        />
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light" (click)="closeModal()">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="submitForm(myForm)">Save</button>
+  </div>
+</ng-template>
