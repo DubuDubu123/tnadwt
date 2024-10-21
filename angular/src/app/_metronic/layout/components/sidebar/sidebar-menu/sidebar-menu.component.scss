@@ -1,0 +1,16 @@
+
+
+
+/* Active Main Navigation Link with Gradient */
+.menu-link.active {
+  background: linear-gradient(90deg, #279cfd, #72c6ff) !important;
+  
+}
+
+/* Active Submenu Link */
+.menu-sub .menu-link.active {
+  background-color: #279cfd !important; /* Solid blue background for active sub-items */
+  color: #ffffff !important; /* White text for active sub-items */
+}
+
+

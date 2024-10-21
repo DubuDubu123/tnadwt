@@ -1,0 +1,117 @@
+<div class="row g-5 g-xl-8">
+  <div class="card">
+    <div class="card-header border-0 pt-6">
+      <div class="card-title">
+        <div class="d-flex align-items-center position-relative my-1">
+          <i class="fas fa-search fs-3 position-absolute ms-5"></i>
+          <input
+            type="text"
+            [(ngModel)]="searchText"
+            class="form-control form-control-solid w-250px ps-12"
+            placeholder="Search"
+          />
+        </div>
+      </div>
+      <div class="card-toolbar">
+        <div class="d-flex justify-content-end">
+          <button type="button" class="btn btn-primary" (click)="openModal()">
+            <i class="fas fa-plus-circle"></i> Add Offence
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-body pt-0" *ngIf="offences && offences.length > 0; else noData">
+      <table class="table table-striped table-bordered table-hover">
+        <thead>
+          <tr>
+            <th>Sl.No</th>
+            <th>Offence Name</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let offence of filteredOffences() | paginate: { itemsPerPage: 10, currentPage: page }; let i = index">
+            <td>{{ (page - 1) * 10 + i + 1 }}</td>
+            <td>{{ offence.offence_name }}</td>
+            <td>
+              <span class="badge" [ngClass]="{
+                'badge-success': offence.status === 1,
+                'badge-danger': offence.status === 0
+              }">
+                {{ offence.status === 1 ? 'Active' : 'Inactive' }}
+              </span>
+            </td>
+            <td>
+              <!-- Dropdown for actions -->
+              <div ngbDropdown class="me-0">
+                <button ngbDropdownToggle class="btn btn-circle btn-icon btn-bg-light btn-active-color-primary">
+                  <i class="bi bi-three-dots-vertical fs-3"></i>
+                </button>
+                <div ngbDropdownMenu class="dropdown-menu-end">
+                  <button ngbDropdownItem (click)="editOffence(offence, i)">Edit</button>
+                  <button ngbDropdownItem (click)="confirmDelete(i)">Delete</button>
+                  <button ngbDropdownItem (click)="confirmToggleStatus(offence)">
+                    {{ offence.status === 1 ? 'Set Inactive' : 'Set Active' }}
+                  </button>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Pagination Controls -->
+      <div class="d-flex justify-content-end align-items-center">
+        <pagination-controls (pageChange)="page = $event"></pagination-controls>
+      </div>
+    </div>
+
+    <!-- No Data Template -->
+    <ng-template #noData>
+      <div class="alert alert-info text-center mt-3">
+        No Offences found.
+      </div>
+    </ng-template>
+  </div>
+
+  <!-- Modal Template for Add/Edit Offence -->
+  <ng-template #formModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">{{ editIndex !== null ? 'Edit' : 'Add' }} Offence</h5>
+      <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
+    </div>
+    <div class="modal-body">
+      <form #myForm="ngForm">
+        <div class="mb-3">
+          <label for="offenceName" class="form-label">Offence Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="offenceName"
+            [(ngModel)]="offenceModel.offence_name"
+            name="offenceName"
+            required
+            #offenceNameCtrl="ngModel"
+            [ngClass]="{ 'is-invalid': offenceNameCtrl.invalid && offenceNameCtrl.touched }"
+          />
+          <div *ngIf="offenceNameCtrl.invalid && offenceNameCtrl.touched" class="invalid-feedback">
+            Offence Name is required.
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light" (click)="closeModal()">Cancel</button>
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="submitForm(myForm)"
+        [disabled]="myForm.invalid"
+      >
+        Save
+      </button>
+    </div>
+  </ng-template>
+</div>
