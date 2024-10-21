@@ -94,20 +94,39 @@ export class RoleListingComponent implements OnInit {
 
     this.isLoading = true;
     if (this.isEditing) {
-      this.roleService.updateRole(this.roleModel.id, this.roleModel).subscribe(() => {
-        this.showAlert('Role updated successfully!');
-        this.loadRoles();
-        this.closeModal();
-      });
+      this.roleService.updateRole(this.roleModel.id, this.roleModel).subscribe(
+        () => {
+          this.showAlert('Role updated successfully!');
+          this.loadRoles();
+          this.closeModal();
+        },
+        (error) => {
+          if (error.status === 400 && error.error.error === 'Role name already exists') {
+            Swal.fire('Error', 'Role name already exists. Please choose a different name.', 'error');
+          } else {
+            Swal.fire('Error', 'Failed to update the role. Please try again later.', 'error');
+          }
+        }
+      );
     } else {
-      this.roleService.addRole(this.roleModel).subscribe(() => {
-        this.showAlert('Role added successfully!');
-        this.loadRoles();
-        this.closeModal();
-      });
+      this.roleService.addRole(this.roleModel).subscribe(
+        () => {
+          this.showAlert('Role added successfully!');
+          this.loadRoles();
+          this.closeModal();
+        },
+        (error) => {
+          if (error.status === 400 && error.error.error === 'Role name already exists') {
+            Swal.fire('Error', 'Role name already exists. Please choose a different name.', 'error');
+          } else {
+            Swal.fire('Error', 'Failed to add the role. Please try again later.', 'error');
+          }
+        }
+      );
     }
     this.isLoading = false;
   }
+
 
   // Edit an existing role
   editRole(role: any) {

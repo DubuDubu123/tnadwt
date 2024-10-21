@@ -19,6 +19,9 @@
     "allowSyntheticDefaultImports": true,
     "target": "es2022",
     "module": "es2022",
+    "allowJs": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
     "lib": [
       "es2018",
       "dom"
@@ -30,4 +33,6 @@
     "strictInputAccessModifiers": true,
     "strictTemplates": true
   }
+
+
 }

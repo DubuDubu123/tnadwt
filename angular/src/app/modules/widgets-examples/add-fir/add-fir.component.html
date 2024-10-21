@@ -324,20 +324,18 @@
 
 
 
-          <!-- Section Invoked Under IPC/POCSO/etc. -->
           <div class="col-md-12 mb-3">
             <label for="sectionsIPC" class="form-label">18. Section Invoked Under IPC/POCSO/etc. *</label>
-            <textarea
+            <input
+              type="text"
               id="sectionsIPC"
+              #tagifyInput
               class="form-control"
-              formControlName="sectionsIPC"
-              rows="1"
-              required
-              maxlength="500"
-              placeholder="Section Invoked Under IPC/POCSO/etc."
-            ></textarea>
-            <small class="form-text text-muted">Number of Characters: {{ 500 - (firForm.get('sectionsIPC')?.value?.length || 0) }}/500</small>
+              placeholder="Type sections and press Enter to add tags"
+            />
+            <small class="form-text text-muted">Press Enter to add each section as a tag.</small>
           </div>
+
 
           <!-- Sections of the SC/ST POA Act Invoked for the Offence -->
           <div class="col-md-12 mb-3">

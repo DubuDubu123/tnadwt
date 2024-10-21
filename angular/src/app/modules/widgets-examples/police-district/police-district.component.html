@@ -89,24 +89,21 @@
         <!-- District Name Dropdown -->
         <div class="mb-3">
           <label for="districtName" class="form-label">District Name</label>
-          <select
-            class="form-select"
+          <input
+            type="text"
+            class="form-control"
             id="districtName"
             [(ngModel)]="districtModel.district_division_name"
             name="districtName"
             required
             #districtNameCtrl="ngModel"
             [ngClass]="{ 'is-invalid': districtNameCtrl.invalid && districtNameCtrl.touched }"
-          >
-            <option value="" disabled>Select District</option>
-            <option *ngFor="let district of districts" [value]="district">
-              {{ district }}
-            </option>
-          </select>
+          />
           <div *ngIf="districtNameCtrl.invalid && districtNameCtrl.touched" class="invalid-feedback">
             District name is required.
           </div>
         </div>
+
 
         <!-- Police Range Field -->
         <div class="mb-3">

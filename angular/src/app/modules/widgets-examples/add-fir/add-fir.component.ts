@@ -1,4 +1,5 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef,AfterViewInit } from '@angular/core';
+
 import {
   FormsModule,
   ReactiveFormsModule,
@@ -12,6 +13,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FirService } from 'src/app/services/fir.service';
 import Swal from 'sweetalert2';
+
+import Tagify from '@yaireo/tagify';
 
 @Component({
   selector: 'app-add-fir',
@@ -44,6 +47,11 @@ export class AddFirComponent implements OnInit {
     { label: 'Accused Information' },
   ];
 
+  @ViewChild('tagifyInput') tagifyInput!: ElementRef;
+  tagify!: Tagify; // Correctly typed Tagify instance
+  sectionsIPC: string[] = []; // Array to store multiple tags
+
+
   // Dropdown options
   policeCities: string[] = [];
   policeZones: string[] = [];
@@ -75,11 +83,40 @@ export class AddFirComponent implements OnInit {
     if (this.userId) {
       this.loadUserData();
     }
-
+    this.initializeTagify();
 
   }
 
+  initializeTagify(): void {
+    if (this.tagifyInput?.nativeElement) {
+      this.tagify = new Tagify(this.tagifyInput.nativeElement, {
+        maxTags: 10,
+        enforceWhitelist: false,
+        delimiters: ', ',
+        dropdown: { enabled: 0 }
+      });
 
+      // Listen for 'add' event to update sectionsIPC array
+      this.tagify.on('add', (e: any) => {
+        this.sectionsIPC.push(e.detail.data.value);
+        this.updateSectionsIPCControl();
+      });
+
+      // Listen for 'remove' event to update sectionsIPC array
+      this.tagify.on('remove', (e: any) => {
+        const removedTag = e.detail.data.value;
+        this.sectionsIPC = this.sectionsIPC.filter(tag => tag !== removedTag);
+        this.updateSectionsIPCControl();
+      });
+    }
+  }
+
+
+
+  // Update the FormControl for sectionsIPC
+  updateSectionsIPCControl(): void {
+    this.firForm.get('sectionsIPC')?.setValue(this.sectionsIPC.join(', '));
+  }
   onVictimAgeChange(index: number): void {
     const victimGroup = this.victims.at(index) as FormGroup;
     const ageControl = victimGroup.get('age');
@@ -180,7 +217,10 @@ export class AddFirComponent implements OnInit {
     });
   }
 
-
+  ngAfterViewInit(): void {
+    // Initialize Tagify after the view is fully initialized
+    this.initializeTagify();
+  }
   // Validator to restrict future dates
 maxDateValidator() {
   return (control: any) => {
@@ -421,6 +461,8 @@ maxDateValidator() {
       return;
     }
 
+    this.updateSectionsIPCControl();
+
     const firData = {
       ...this.firForm.value,
       status: type === 'draft' ? 0 : this.step,
@@ -549,4 +591,6 @@ maxDateValidator() {
     accused.get('scstFIRNumber')?.updateValueAndValidity();
     accused.get('scstFIRNumberSuffix')?.updateValueAndValidity();
   }
+
+
 }

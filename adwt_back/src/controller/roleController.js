@@ -24,35 +24,55 @@ const getAllRoles = (req, res) => {
 };
   
   // Add a role
-  const addRole = (req, res) => {
-    const { name } = req.body;
-    const query = `
-      INSERT INTO roles (role_name) VALUES (?);
-    `;
-    db.query(query, [name], (err, result) => {
+// Add a role with duplicate name check
+const addRole = (req, res) => {
+  const { name } = req.body;
+  const checkQuery = `SELECT * FROM roles WHERE role_name = ?`;
+  db.query(checkQuery, [name], (err, results) => {
+    if (err) {
+      console.error('Database error:', err);
+      return res.status(500).send({ error: 'Database error' });
+    }
+    if (results.length > 0) {
+      return res.status(400).send({ error: 'Role name already exists' });
+    }
+
+    const insertQuery = `INSERT INTO roles (role_name) VALUES (?)`;
+    db.query(insertQuery, [name], (err, result) => {
       if (err) {
         console.error('Database error:', err);
         return res.status(500).send({ error: 'Database error' });
       }
       res.send({ message: 'Role added successfully', id: result.insertId });
     });
-  };
-  
-  // Update a role
-  const updateRole = (req, res) => {
-    const roleId = req.params.id;
-    const { name } = req.body;
-    const query = `
-      UPDATE roles SET role_name = ? WHERE role_id = ?;
-    `;
-    db.query(query, [name, roleId], (err, result) => {
+  });
+};
+
+// Update a role with duplicate name check
+const updateRole = (req, res) => {
+  const roleId = req.params.id;
+  const { name } = req.body;
+  const checkQuery = `SELECT * FROM roles WHERE role_name = ? AND role_id != ?`;
+  db.query(checkQuery, [name, roleId], (err, results) => {
+    if (err) {
+      console.error('Database error:', err);
+      return res.status(500).send({ error: 'Database error' });
+    }
+    if (results.length > 0) {
+      return res.status(400).send({ error: 'Role name already exists' });
+    }
+
+    const updateQuery = `UPDATE roles SET role_name = ? WHERE role_id = ?`;
+    db.query(updateQuery, [name, roleId], (err, result) => {
       if (err) {
         console.error('Database error:', err);
         return res.status(500).send({ error: 'Database error' });
       }
       res.send({ message: 'Role updated successfully' });
     });
-  };
+  });
+};
+
   
   // Delete a role
   const deleteRole = (req, res) => {
