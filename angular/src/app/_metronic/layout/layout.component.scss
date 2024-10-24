@@ -1,0 +1,25 @@
+:host {
+  height: 100%;
+  margin: 0;
+
+  .flex-root {
+    height: 100%;
+  }
+}
+
+.page-loaded {
+  app-layout {
+    opacity: 1;
+    transition: opacity 1s ease-in-out;
+  }
+}
+/* General Layout Adjustments */
+.layout {
+  background-color: #ffffff !important; /* Light gray background for the entire layout */
+}
+
+/* Adjusting Header Color */
+.app-header {
+  background-color: #ffffff !important; /* Blue header to match the palette */
+  color: #ffffff !important; /* White text for the header */
+}

@@ -1,0 +1,90 @@
+:host {
+  width: 100%;
+  @media (min-width: 992px) {
+    .login-form {
+      width: 100%;
+      max-width: 450px;
+
+      .mat-form-field {
+        width: 100%;
+      }
+    }
+  }
+}
+/* Login form styling */
+.login-form {
+  max-width: 400px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ddd;
+}
+
+/* Center the image */
+.login-image {
+  max-width: 100px; /* Make the image smaller */
+  height: auto; /* Maintain aspect ratio */
+  margin: 0 auto; /* Center the image */
+}
+
+/* Alerts */
+.alert {
+  font-size: 1rem;
+  line-height: 1.5;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+/* Form Row Input */
+.fv-row input {
+  min-height: 45px;
+  font-size: 0.95rem;
+}
+
+/* Buttons */
+button {
+  padding: 10px;
+  font-size: 1rem;
+  background-color: #279cfd; /* Blue button */
+  border-radius: 5px;
+  border: none;
+  color: #fff;
+  transition: background-color 0.3s;
+}
+
+button:disabled {
+  background-color: #ccc;
+}
+
+button:hover {
+  background-color: #007bff;
+}
+
+/* Form Checkbox and Forgot Password link */
+.form-check-input {
+  margin-right: 10px;
+}
+
+.link-primary {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.link-primary:hover {
+  text-decoration: underline;
+}
+
+/* Registration Link */
+.text-center a {
+  color: #279cfd;
+  text-decoration: none;
+}
+
+.text-center a:hover {
+  text-decoration: underline;
+}

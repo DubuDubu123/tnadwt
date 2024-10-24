@@ -1,0 +1,10 @@
+/* Increase specificity by adding a parent element or ID */
+#kt_app_sidebar .app-sidebar {
+  background-color: #ffffff !important; /* Ensure this takes priority */
+}
+
+/* Sidebar Logo Background */
+.app-sidebar-logo {
+  background-color: #ffffff !important; /* Slightly lighter gray for the logo */
+}
+

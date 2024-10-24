@@ -1,0 +1,223 @@
+<!-- Add style block for hover effects -->
+<style>
+  /* Default color for parent and submenu links */
+  .menu-link {
+    color: #279cfd !important; /* Default text color */
+  }
+
+  /* Parent menu text turns gray when the submenu is expanded */
+  .menu-item.menu-accordion.show > .menu-link .menu-title {
+    color: gray !important; /* Change parent text to gray when expanded */
+  }
+
+  /* Parent menu's arrow turns gray when submenu is expanded */
+  .menu-item.menu-accordion.show > .menu-link .menu-arrow {
+    color: gray !important; /* Change arrow to gray when expanded */
+  }
+.menu-arrow {
+  color: gray !important; /* Change arrow to gray when expanded */
+
+}
+  /* Parent menu's icon turns gray when submenu is expanded */
+  .menu-item.menu-accordion.show > .menu-link .menu-icon i {
+    color: gray !important; /* Change icon to gray when expanded */
+  }
+
+  /* Active state for the selected submenu (white text and blue background) */
+  .menu-sub .menu-link.active {
+    background: linear-gradient(90deg, #279cfd, #72c6ff) !important;
+    color: #ffffff !important; /* White text for active submenu */
+  }
+
+  /* Hover effect for main menu and submenu */
+  .menu-link:hover .menu-title,
+  .menu-link:hover .menu-icon i,
+  .menu-link:hover .menu-arrow,
+  .menu-sub .menu-link:hover .menu-title,
+  .menu-sub .menu-link:hover .menu-icon i,
+  .menu-sub .menu-link:hover .menu-arrow {
+    color: #279cfd !important; /* Hover color for text, icon, and arrow */
+  }
+
+  /* Active state for main menu and submenu */
+  .menu-link.active .menu-title,
+  .menu-link.active .menu-icon i,
+  .menu-link.active .menu-arrow,
+  .menu-sub .menu-link.active .menu-title,
+  .menu-sub .menu-link.active .menu-icon i,
+  .menu-sub .menu-link.active .menu-arrow {
+    color: #ffffff !important; /* Active state: white color for text, icon, and arrow */
+  }
+</style>
+
+
+<!-- Begin Sidebar Menu Wrapper -->
+<div *ngIf="hasPermissions()" id="kt_app_sidebar_menu_scroll" class="scroll-y my-5 mx-3"
+     data-kt-scroll="true" data-kt-scroll-activate="true" data-kt-scroll-height="auto"
+     data-kt-scroll-dependencies="#kt_app_sidebar_logo, #kt_app_sidebar_footer"
+     data-kt-scroll-wrappers="#kt_app_sidebar_menu" data-kt-scroll-offset="5px"
+     data-kt-scroll-save-state="true">
+  <!-- Begin Menu -->
+  <div class="menu menu-column menu-rounded menu-sub-indention fw-semibold fs-6"
+       id="kt_app_sidebar_menu" data-kt-menu="true" data-kt-menu-expand="false">
+
+    <!-- Dashboard -->
+    <div class="menu-item" *ngIf="hasPermission('dashboard')">
+      <a class="menu-link without-sub" routerLink="/dashboard" routerLinkActive="active">
+        <span class="menu-icon">
+          <i class="fas fa-home"></i> <!-- Home Icon -->
+        </span>
+        <span class="menu-title" translate="MENU.DASHBOARD"></span>
+      </a>
+    </div>
+
+    <!-- User Management -->
+    <div class="menu-item menu-accordion" *ngIf="hasPermission('user management')"
+         data-kt-menu-trigger="click" routerLinkActive="here show">
+      <span class="menu-link">
+        <span class="menu-icon">
+          <i class="fas fa-users"></i> <!-- Users Icon -->
+        </span>
+        <span class="menu-title">User Management</span>
+        <span class="menu-arrow"></span>
+      </span>
+      <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
+        <div class="menu-item" *ngIf="hasPermission('users')">
+          <a class="menu-link without-sub" routerLink="/apps/users" routerLinkActive="active">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Users</span>
+          </a>
+        </div>
+        <div class="menu-item" *ngIf="hasPermission('roles')">
+          <a class="menu-link without-sub" routerLink="/apps/roles" routerLinkActive="active">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Roles</span>
+          </a>
+        </div>
+        <div class="menu-item" *ngIf="hasPermission('permissions')">
+          <a class="menu-link without-sub" routerLink="/apps/permissions" routerLinkActive="active">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Permissions</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Master Data -->
+    <div class="menu-item menu-accordion" *ngIf="hasPermission('master data')"
+         data-kt-menu-trigger="click" routerLinkActive="here show">
+      <span class="menu-link">
+        <span class="menu-icon">
+          <i class="fas fa-key"></i> <!-- Key Icon -->
+        </span>
+        <span class="menu-title">Master Data</span>
+        <span class="menu-arrow"></span>
+      </span>
+      <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
+        <div class="menu-item" *ngIf="hasPermission('District/City')">
+          <a class="menu-link without-sub" routerLink="/widgets-examples/police-district" routerLinkActive="active">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">District/City</span>
+          </a>
+        </div>
+        <div class="menu-item" *ngIf="hasPermission('revenue district')">
+          <a class="menu-link without-sub" routerLink="/widgets-examples/revenue-district" routerLinkActive="active">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Revenue District</span>
+          </a>
+        </div>
+        <div class="menu-item" *ngIf="hasPermission('offence')">
+          <a class="menu-link without-sub" routerLink="/widgets-examples/offence" routerLinkActive="active">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Offence</span>
+          </a>
+        </div>
+        <div class="menu-item" *ngIf="hasPermission('offence act for sc/st')">
+          <a class="menu-link without-sub" routerLink="/widgets-examples/offence-act-scst" routerLinkActive="active">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Offence Act for SC/ST</span>
+          </a>
+        </div>
+        <!-- <div class="menu-item" *ngIf="hasPermission('district')">
+          <a class="menu-link without-sub" routerLink="/widgets-examples/district" routerLinkActive="active">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">District</span>
+          </a>
+        </div> -->
+        <!-- <div class="menu-item" *ngIf="hasPermission('city')">
+          <a class="menu-link without-sub" routerLink="/widgets-examples/city" routerLinkActive="active">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">City</span>
+          </a>
+        </div> -->
+        <div class="menu-item" *ngIf="hasPermission('caste and community')">
+          <a class="menu-link without-sub" routerLink="/widgets-examples/caste-and-community" routerLinkActive="active">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Caste and Community</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- FIR -->
+    <div class="menu-item menu-accordion" *ngIf="hasPermission('fir')"
+         data-kt-menu-trigger="click" routerLinkActive="here show">
+      <span class="menu-link">
+        <span class="menu-icon">
+          <i class="fas fa-file-alt"></i> <!-- File Icon -->
+        </span>
+        <span class="menu-title">FIR</span>
+        <span class="menu-arrow"></span>
+      </span>
+      <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
+        <div class="menu-item" *ngIf="hasPermission('fir list')">
+          <a class="menu-link without-sub" routerLink="/widgets-examples/fir-list" routerLinkActive="active">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">FIR List</span>
+          </a>
+        </div>
+        <div class="menu-item" *ngIf="hasPermission('add fir')">
+          <a class="menu-link without-sub" routerLink="/widgets-examples/add-fir" routerLinkActive="active">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Add FIR</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- End Menu -->
+</div>
+<!-- End Sidebar Menu Wrapper -->
+
+
+
+
+
+
+
+

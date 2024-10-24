@@ -1,0 +1,111 @@
+<div class="card">
+  <div class="card-header border-0 pt-6">
+    <div class="card-title">
+      <div class="d-flex align-items-center position-relative my-1">
+        <i class="fas fa-search fs-3 position-absolute ms-5"></i>
+        <input
+          type="text"
+          [(ngModel)]="searchText"
+          class="form-control form-control-solid w-250px ps-12"
+          placeholder="Search"
+        />
+      </div>
+    </div>
+    <div class="card-toolbar">
+      <button type="button" class="btn btn-primary" (click)="openModal()">
+        <i class="fas fa-plus-circle"></i> Add Caste and Community
+      </button>
+    </div>
+  </div>
+
+  <div class="card-body pt-0">
+    <table class="table table-striped table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>Sl.No</th>
+          <th>Caste Name</th>
+          <th>Community Name</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let caste of filteredCastes() | paginate: { itemsPerPage: 10, currentPage: page }; let i = index">
+          <td>{{ (page - 1) * 10 + i + 1 }}</td>
+          <td>{{ caste.caste_name }}</td>
+          <td>{{ caste.community_name }}</td>
+          <td>
+            <span class="badge" [ngClass]="{ 'badge-success': caste.status === 1, 'badge-danger': caste.status === 0 }">
+              {{ caste.status === 1 ? 'Active' : 'Inactive' }}
+            </span>
+          </td>
+          <td>
+            <div ngbDropdown class="d-inline-block">
+              <button ngbDropdownToggle class="btn btn-circle btn-icon btn-bg-light btn-active-color-primary" type="button">
+                <i class="fas fa-ellipsis-h fs-3"></i> <!-- Three-dot icon -->
+              </button>
+              <div ngbDropdownMenu>
+                <button ngbDropdownItem (click)="editCaste(caste, i)">Edit</button>
+                <button ngbDropdownItem (click)="confirmDelete(i)">Remove</button>
+                <button ngbDropdownItem (click)="toggleStatus(caste)">
+                  {{ caste.status === 1 ? 'Set Inactive' : 'Set Active' }}
+                </button>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="d-flex justify-content-end align-items-center">
+      <pagination-controls (pageChange)="page = $event"></pagination-controls>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Template -->
+<ng-template #formModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">{{ editIndex !== null ? 'Edit' : 'Add' }} Caste and Community</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
+  </div>
+  <div class="modal-body">
+    <form #myForm="ngForm">
+      <div class="mb-3">
+        <label for="casteName" class="form-label">Caste Name</label>
+        <input
+          type="text"
+          class="form-control"
+          id="casteName"
+          [(ngModel)]="casteModel.caste_name"
+          name="casteName"
+          required
+          #casteNameCtrl="ngModel"
+          [ngClass]="{ 'is-invalid': casteNameCtrl.invalid && (casteNameCtrl.dirty || casteNameCtrl.touched) }"
+        />
+        <div *ngIf="casteNameCtrl.invalid && (casteNameCtrl.dirty || casteNameCtrl.touched)" class="invalid-feedback">
+          Caste Name is required.
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="communityName" class="form-label">Community Name</label>
+        <input
+          type="text"
+          class="form-control"
+          id="communityName"
+          [(ngModel)]="casteModel.community_name"
+          name="communityName"
+          required
+          #communityNameCtrl="ngModel"
+          [ngClass]="{ 'is-invalid': communityNameCtrl.invalid && (communityNameCtrl.dirty || communityNameCtrl.touched) }"
+        />
+        <div *ngIf="communityNameCtrl.invalid && (communityNameCtrl.dirty || communityNameCtrl.touched)" class="invalid-feedback">
+          Community Name is required.
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light" (click)="closeModal()">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="submitForm(myForm)">Save</button>
+  </div>
+</ng-template>

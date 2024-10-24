@@ -1,0 +1,37 @@
+<div class="card">
+  <div class="card-body">
+    <!-- Table for Police District inside the widget -->
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th>Sl.No</th>
+            <th>District Name</th>
+            <th>Police Range</th>
+            <th>Police Zone</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let district of policeDistricts; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ district.name }}</td>
+            <td>{{ district.range }}</td>
+            <td>{{ district.zone }}</td>
+            <td>
+              <span [ngClass]="{'badge bg-success': district.status === 'Active', 'badge bg-danger': district.status === 'Inactive'}">
+                {{ district.status }}
+              </span>
+            </td>
+            <td>
+              <button class="btn btn-outline-secondary btn-sm">
+                <i class="fas fa-ellipsis-h"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

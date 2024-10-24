@@ -1,0 +1,44 @@
+<div class="d-flex flex-column flex-lg-row flex-column-fluid">
+
+  <!--begin::Aside (Left side)-->
+  <div class="d-flex flex-lg-row-fluid w-lg-50 bgi-size-cover bgi-position-center order-1 order-lg-1" style="background-color: whitesmoke;">
+    <!--begin::Content-->
+    <div class="d-flex flex-column flex-center py-15 px-5 px-md-15 w-100 custom-background">
+      <!--begin::Logo-->
+      <a routerLink="/" class="mb-12">
+        <!-- <img alt="Logo" src="./assets/images/image.png" class="h-75px w-100" /> -->
+      </a>
+      <!--end::Logo-->
+
+      <!--begin::Image-->
+      <img class="mx-auto w-200px w-md-40 w-xl-350px mb-1 mt2 mb-lg-10" src="./assets/images/ADW_login_Image.png"
+        alt="" />
+
+      <h2 class="text-center text-dark mt-1">Adi Dravidar Welfare Departments Govt. of Tamil Nadu</h2>
+      <!--end::Image-->
+
+    </div>
+    <!--end::Content-->
+  </div>
+  <!--end::Aside (Left side)-->
+
+  <!--begin::Body (Right side)-->
+  <div class="d-flex flex-column flex-lg-row-fluid w-lg-50 p-10 order-2 order-lg-2">
+    <!--begin::Form-->
+    <div class="d-flex flex-center flex-column flex-lg-row-fluid">
+      <!--begin::Wrapper-->
+      <div class="p-10">
+        <router-outlet></router-outlet>
+
+        <!--begin::Form (Example form from your previous code)-->
+
+        <!--end::Form-->
+
+      </div>
+      <!--end::Wrapper-->
+    </div>
+    <!--end::Form-->
+  </div>
+  <!--end::Body (Right side)-->
+
+</div>

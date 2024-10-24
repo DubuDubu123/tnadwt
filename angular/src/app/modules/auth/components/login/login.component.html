@@ -1,0 +1,83 @@
+<form class="form w-100 login-form" *ngIf="loginForm" [formGroup]="loginForm" novalidate="novalidate" id="kt_login_signin_form"
+  (ngSubmit)="submit()">
+
+  <!-- Add the login image, make it small and centered -->
+  <div class="text-center mb-4">
+
+    <img src="./assets/images/image.png" alt="Login Image" class="login-image">
+  </div>
+<h4 class="text-center">  Adi Dravidar and Tribal Welfare Department <br> Government of Tamil Nadu</h4>
+  <!-- Informational alert box for the account and password -->
+  <!-- <div *ngIf="!hasError" class="alert alert-info" role="alert">
+
+  </div> -->
+
+  <!-- Error alert box for login failure -->
+  <div *ngIf="hasError" class="alert alert-danger" role="alert">
+    The login details are incorrect. Please provide the correct username and password.
+  </div>
+
+  <!-- Email field with validation messages -->
+  <div class="fv-row mb-8">
+    <label class="form-label fs-6 fw-bolder text-gray-900">Email</label>
+    <input class="form-control bg-transparent" type="email" name="email" formControlName="email" autocomplete="off"
+      [ngClass]="{
+        'is-invalid': f.email.invalid && (f.email.touched || f.email.dirty),
+        'is-valid': f.email.valid && (f.email.touched || f.email.dirty)
+      }" />
+    <div *ngIf="f.email.invalid && (f.email.dirty || f.email.touched)" class="text-danger mt-2">
+      <div *ngIf="f.email.errors?.required">Email is required.</div>
+      <div *ngIf="f.email.errors?.minlength">Email must be at least 3 characters long.</div>
+      <div *ngIf="f.email.errors?.maxlength">Email cannot be more than 320 characters long.</div>
+      <div *ngIf="f.email.errors?.invalidEmail">Please enter a valid email address with a correct domain (e.g., example&#64;domain.com).</div>
+    </div>
+  </div>
+
+  <!-- Password field with eye icon for visibility toggle and validation messages -->
+  <div class="fv-row mb-3 position-relative">
+    <label class="form-label fw-bolder text-gray-900 fs-6 mb-0">Password</label>
+    <div class="input-group">
+      <input [type]="showPassword ? 'text' : 'password'"
+             class="form-control bg-transparent"
+             name="password"
+             formControlName="password"
+             autocomplete="off"
+             [ngClass]="{
+               'is-invalid': f.password.invalid && (f.password.touched || f.password.dirty),
+               'is-valid': f.password.valid && (f.password.touched || f.password.dirty)
+             }" />
+      <span class="input-group-text" (click)="togglePasswordVisibility()" style="cursor: pointer;">
+        <i class="fa" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+      </span>
+    </div>
+    <div *ngIf="f.password.invalid && (f.password.dirty || f.password.touched)" class="text-danger mt-2">
+      <div *ngIf="f.password.errors?.required">Password is required.</div>
+      <div *ngIf="f.password.errors?.minlength">Password must be at least 3 characters long.</div>
+      <div *ngIf="f.password.errors?.maxlength">Password cannot be more than 100 characters long.</div>
+    </div>
+  </div>
+
+  <!-- Remember Me checkbox on the left, Forgot Password on the right -->
+  <div class="d-flex justify-content-between align-items-center fs-base fw-semibold mb-8">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="rememberMe" formControlName="rememberMe" />
+      <label class="form-check-label" for="rememberMe">Remember Me</label>
+    </div>
+    <a routerLink="/auth/forgot-password" class="link-primary">Forgot Password?</a>
+  </div>
+
+  <!-- Submit button -->
+  <div class="d-grid mb-10">
+    <button type="submit" id="kt_sign_in_submit" class="btn btn-primary" [disabled]="loginForm.invalid">
+      <ng-container *ngIf="isLoading$ | async">
+        <span class="indicator-progress" [style.display]="'block'">Please wait...
+          <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+        </span>
+      </ng-container>
+      <ng-container *ngIf="(isLoading$ | async) === false">
+        <span class="indicator-label">Login</span>
+      </ng-container>
+    </button>
+  </div>
+
+</form>

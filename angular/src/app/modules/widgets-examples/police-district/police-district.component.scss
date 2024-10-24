@@ -1,0 +1,32 @@
+.btn-circle {
+  width: 40px;              /* Set the width and height of the button */
+  height: 40px;
+  border-radius: 50%;       /* Make the button round */
+  padding: 0;               /* No padding to center the icon */
+  background-color: #e0f2ff; /* Light background color */
+  border: 1px solid #007bff; /* Border color matching the blue icon */
+}
+
+.btn-circle i {
+  color: #007bff;           /* Set the color of the icon (blue) */
+  font-size: 18px;          /* Adjust the size of the icon */
+}
+
+.btn-icon {
+  display: flex;            /* Flexbox to align icon perfectly */
+  justify-content: center;
+  align-items: center;
+}
+
+/* Hide the default down arrow from ngbDropdownToggle */
+.ngb-dropdown-toggle::after {
+  display: none !important; /* Hides the arrow */
+}
+
+/* Adjust dropdown menu styles */
+.menu-sub-dropdown {
+  min-width: 150px;
+  padding: 0.5rem;
+  border-radius: 4px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
